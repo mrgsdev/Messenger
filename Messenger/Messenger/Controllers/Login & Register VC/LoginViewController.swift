@@ -105,7 +105,6 @@ class LoginViewController: UIViewController {
                                    width: scrollView.width-60,
                                    height: 52)
         
-        
     }
     
     @objc private func loginButtonTapped() {
