@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import FirebaseAuth
 class RegisterViewController: UIViewController {
     
     let scrollView: UIScrollView = {
@@ -120,12 +120,8 @@ class RegisterViewController: UIViewController {
         //        gesture.numberOfTapsRequired = 1
         //        gesture.numberOfTouchesRequired = 1
         imageView.addGestureRecognizer(gesture)
-        
         imageView.isUserInteractionEnabled = true
         scrollView.isUserInteractionEnabled = true
-        NSLayoutConstraint.activate([
-          
-        ])
     }
     
     
@@ -173,7 +169,7 @@ class RegisterViewController: UIViewController {
         firstNameField.resignFirstResponder()
         lastNameField.resignFirstResponder()
         
-        guard let firstName = firstNameField.text,
+        guard var firstName = firstNameField.text,
               let lastName = lastNameField.text,
               let email = emailField.text,
               let password = passwordField.text,
@@ -184,6 +180,29 @@ class RegisterViewController: UIViewController {
               password.count >= 6 else {
             alertUserLoginError()
             return
+        }
+        
+        //Firebase register
+        
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+            if let error = error{
+                let alert = UIAlertController(title: "Woops",
+                                              message: error.localizedDescription,
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title:"Dismiss",
+                                              style: .cancel, handler: nil))
+                self?.present(alert, animated: true)
+            }
+          
+            if authResult != nil{
+                let alert = UIAlertController(title: "Create",
+                                              message: nil,
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title:"Dismiss",
+                                              style: .cancel, handler: nil))
+                self?.present(alert, animated: true)
+            }
+          
         }
     }
     func alertUserLoginError() {

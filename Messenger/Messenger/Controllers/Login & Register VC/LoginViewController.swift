@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import FirebaseAuth
 class LoginViewController: UIViewController {
     
     let scrollView: UIScrollView = {
@@ -115,6 +115,28 @@ class LoginViewController: UIViewController {
               !email.isEmpty, !password.isEmpty, password.count >= 6 else {
             alertUserLoginError()
             return
+        }
+        
+        // Firebase Log In
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            if let error = error{
+                let alert = UIAlertController(title: "Woops",
+                                              message: error.localizedDescription,
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title:"Dismiss",
+                                              style: .cancel, handler: nil))
+                self?.present(alert, animated: true)
+            }
+          
+            if authResult != nil{
+                let alert = UIAlertController(title: "Success",
+                                              message: nil,
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title:"Dismiss",
+                                              style: .cancel, handler: nil))
+                self?.present(alert, animated: true)
+            }
+          
         }
     }
     func alertUserLoginError() {
