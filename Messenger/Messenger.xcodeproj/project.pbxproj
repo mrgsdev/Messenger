@@ -20,7 +20,8 @@
 		421257F728CF79A000E1E8EA /* NewConverstationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F628CF79A000E1E8EA /* NewConverstationViewController.swift */; };
 		421257F928CF79B700E1E8EA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F828CF79B700E1E8EA /* ProfileViewController.swift */; };
 		421257FC28CF813900E1E8EA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257FB28CF813900E1E8EA /* Extensions.swift */; };
-		42E5BF8428D33B0E00EBCB7C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42E5BF8328D33B0E00EBCB7C /* GoogleService-Info.plist */; };
+		42B58F2528D4720C002289EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42B58F2428D4720C002289EE /* GoogleService-Info.plist */; };
+		42B58F2728D475DF002289EE /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B58F2628D475DF002289EE /* DatabaseManager.swift */; };
 		D3A22BAD03EB83632ED46CAD /* Pods_Messenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841313E964203C9889080350 /* Pods_Messenger.framework */; };
 /* End PBXBuildFile section */
 
@@ -41,7 +42,8 @@
 		421257F628CF79A000E1E8EA /* NewConverstationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConverstationViewController.swift; sourceTree = "<group>"; };
 		421257F828CF79B700E1E8EA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		421257FB28CF813900E1E8EA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		42E5BF8328D33B0E00EBCB7C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		42B58F2428D4720C002289EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		42B58F2628D475DF002289EE /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		841313E964203C9889080350 /* Pods_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C680082B483CD786EECC783E /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,8 +100,8 @@
 		421257E828CF779D00E1E8EA /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				421257FA28CF7A7100E1E8EA /* Login & Register VC */,
 				421257D828CF769700E1E8EA /* ConverstationsViewController.swift */,
+				421257FA28CF7A7100E1E8EA /* Login & Register VC */,
 				421257F228CF796900E1E8EA /* PhotoViewerViewController.swift */,
 				421257F428CF797800E1E8EA /* VideoPlayerViewController.swift */,
 				421257F628CF79A000E1E8EA /* NewConverstationViewController.swift */,
@@ -126,11 +128,12 @@
 		421257EB28CF77C400E1E8EA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				42E5BF8328D33B0E00EBCB7C /* GoogleService-Info.plist */,
+				42B58F2428D4720C002289EE /* GoogleService-Info.plist */,
 				421257ED28CF785E00E1E8EA /* Delegate */,
 				421257DD28CF769800E1E8EA /* Assets.xcassets */,
 				421257E228CF769800E1E8EA /* Info.plist */,
 				421257FB28CF813900E1E8EA /* Extensions.swift */,
+				42B58F2628D475DF002289EE /* DatabaseManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -232,7 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				421257E128CF769800E1E8EA /* LaunchScreen.storyboard in Resources */,
-				42E5BF8428D33B0E00EBCB7C /* GoogleService-Info.plist in Resources */,
+				42B58F2528D4720C002289EE /* GoogleService-Info.plist in Resources */,
 				421257DE28CF769800E1E8EA /* Assets.xcassets in Resources */,
 				421257DC28CF769700E1E8EA /* Main.storyboard in Resources */,
 			);
@@ -288,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				421257EF28CF794200E1E8EA /* LoginViewController.swift in Sources */,
+				42B58F2728D475DF002289EE /* DatabaseManager.swift in Sources */,
 				421257F128CF794800E1E8EA /* RegisterViewController.swift in Sources */,
 				421257D928CF769700E1E8EA /* ConverstationsViewController.swift in Sources */,
 				421257F528CF797800E1E8EA /* VideoPlayerViewController.swift in Sources */,

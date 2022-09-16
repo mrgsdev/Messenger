@@ -16,12 +16,12 @@ class RegisterViewController: UIViewController {
     }()
     
     private let imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "person"))
+        let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
         imageView.tintColor = .gray
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.lightGray.cgColor
+//        imageView.layer.borderWidth = 2
+//        imageView.layer.borderColor = UIColor.lightGray.cgColor
         return imageView
     }()
     private let firstNameField: UITextField = {
@@ -169,7 +169,7 @@ class RegisterViewController: UIViewController {
         firstNameField.resignFirstResponder()
         lastNameField.resignFirstResponder()
         
-        guard var firstName = firstNameField.text,
+        guard let firstName = firstNameField.text,
               let lastName = lastNameField.text,
               let email = emailField.text,
               let password = passwordField.text,
@@ -182,32 +182,52 @@ class RegisterViewController: UIViewController {
             return
         }
         
-        //Firebase register
-        
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
-            if let error = error{
-                let alert = UIAlertController(title: "Woops",
-                                              message: error.localizedDescription,
-                                              preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title:"Dismiss",
-                                              style: .cancel, handler: nil))
-                self?.present(alert, animated: true)
+        //
+        DatabaseManager.shared.userExists(with: email) { [weak self] exists in
+            
+            guard let strongSelf = self else {
+                return
             }
-          
-            if authResult != nil{
-                let alert = UIAlertController(title: "Create",
-                                              message: nil,
-                                              preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title:"Dismiss",
-                                              style: .cancel, handler: nil))
-                self?.present(alert, animated: true)
+            guard !exists else{
+                strongSelf.alertUserLoginError(message: "Looks like a user account for that email adress already exists")
+                // user already exists
+                return
             }
-          
+            //Firebase register
+            
+            Auth.auth().createUser(withEmail: email, password: password) {  authResult, error in
+                 
+                if let error = error{
+                    let alert = UIAlertController(title: "Woops",
+                                                  message: error.localizedDescription,
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title:"Dismiss",
+                                                  style: .cancel, handler: nil))
+                    self?.present(alert, animated: true)
+                }
+                guard let result = authResult else {
+                    print("failed: \(email)")
+                    return
+                }
+                DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName, lastName: lastName, emailAdress: email))
+              
+    //            if authResult != nil{
+    //                let alert = UIAlertController(title: "Create",
+    //                                              message: nil,
+    //                                              preferredStyle: .alert)
+    //                alert.addAction(UIAlertAction(title:"Dismiss",
+    //                                              style: .cancel, handler: nil))
+    //                self?.present(alert, animated: true)
+    //            }
+                strongSelf.navigationController?.dismiss(animated: false)
+            }
         }
+        
+        
     }
-    func alertUserLoginError() {
+    func alertUserLoginError(message:String = "Please enter all information to create a new account") {
         let alert = UIAlertController(title: "Woops",
-                                      message: "Please enter all information to create a new account",
+                                      message: message ,
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title:"Dismiss",
                                       style: .cancel, handler: nil))
@@ -223,7 +243,6 @@ class RegisterViewController: UIViewController {
 }
 
 extension RegisterViewController: UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if textField == emailField {
@@ -232,10 +251,8 @@ extension RegisterViewController: UITextFieldDelegate {
         else if textField == passwordField {
             registerButtonTapped()
         }
-        
         return true
     }
-    
 }
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
