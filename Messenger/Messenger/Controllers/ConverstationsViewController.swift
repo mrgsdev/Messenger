@@ -11,8 +11,7 @@ class ConverstationsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
-//        DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: "12", lastName: "12", emailAdress: "efcom"))
+        view.backgroundColor = .systemPink
     }
     
     

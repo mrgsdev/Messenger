@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FBSDKLoginKit
 class LoginViewController: UIViewController {
     
     let scrollView: UIScrollView = {
@@ -62,6 +63,11 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private let facebookLoginButton: FBLoginButton = {
+        let button = FBLoginButton()
+        button.permissions = ["email", "public_profile"]
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,13 +80,14 @@ class LoginViewController: UIViewController {
         loginButton.addTarget(self,action: #selector(loginButtonTapped),for: .touchUpInside)
         emailField.delegate = self
         passwordField.delegate = self
-        
+        facebookLoginButton.delegate = self
         // Add subviews
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
+        scrollView.addSubview(facebookLoginButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -104,7 +111,11 @@ class LoginViewController: UIViewController {
                                    y: passwordField.bottom+10,
                                    width: scrollView.width-60,
                                    height: 52)
-        
+        facebookLoginButton.frame = CGRect(x: 30,
+                                           y: loginButton.bottom+10,
+                                           width: scrollView.width-60,
+                                           height: 52)
+        facebookLoginButton.frame.origin.y = loginButton.bottom + 20
     }
     
     @objc private func loginButtonTapped() {
@@ -135,18 +146,18 @@ class LoginViewController: UIViewController {
                 return
             }
             strongSelf.navigationController?.dismiss(animated: false)
-//
-//            if authResult != nil{
-//                let alert = UIAlertController(title: "Success",
-//                                              message: nil,
-//                                              preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title:"Dismiss",
-//                                              style: .cancel, handler: nil))
-//                strongSelf.present(alert, animated: true)
-//            }
+            //
+            //            if authResult != nil{
+            //                let alert = UIAlertController(title: "Success",
+            //                                              message: nil,
+            //                                              preferredStyle: .alert)
+            //                alert.addAction(UIAlertAction(title:"Dismiss",
+            //                                              style: .cancel, handler: nil))
+            //                strongSelf.present(alert, animated: true)
+            //            }
             
             
-//
+            //
         }
     }
     func alertUserLoginError() {
@@ -167,17 +178,77 @@ class LoginViewController: UIViewController {
 }
 
 extension LoginViewController: UITextFieldDelegate {
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
+        
         if textField == emailField {
             passwordField.becomeFirstResponder()
         }
         else if textField == passwordField {
             loginButtonTapped()
         }
-
+        
         return true
     }
-
+    
+}
+extension LoginViewController: LoginButtonDelegate{
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginKit.FBLoginButton) {
+        // no operation
+    }
+    
+    func loginButton(_ loginButton: FBSDKLoginKit.FBLoginButton, didCompleteWith result: FBSDKLoginKit.LoginManagerLoginResult?, error: Error?) {
+        guard let token = result?.token?.tokenString else {
+            print("User failed with facebook")
+            return
+        }
+        
+        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me",
+                                                         parameters: ["fields":"email, name"],
+                                                         tokenString: token,
+                                                         version: nil,
+                                                         httpMethod: .get)
+        
+        facebookRequest.start { _, result, error in
+            guard let result = result as? [String:Any], error == nil else {
+                print("failed to make facebook graph request")
+                return
+            }
+            print("\(result)")
+            guard let userName = result["name"] as? String,
+                  let email = result["email"] as? String else {
+                print("Failed to get email and name from facebook result")
+                return
+            }
+            let nameComponents = userName.components(separatedBy: " ")
+            guard nameComponents.count == 2 else {
+                return
+            }
+            let firstName = nameComponents[0]
+            let lastName = nameComponents[1]
+            
+            DatabaseManager.shared.userExists(with: email) { exists in
+                if !exists{
+                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
+                                                                        lastName: lastName,
+                                                                        emailAdress: email))
+                }
+            }
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+            Auth.auth().signIn(with: credential) { [weak self] authResult, error in
+                guard let strongSelf = self else {return}
+                guard authResult != nil,error == nil else{
+                    print("error Auth.auth().signIn FACEBOOK \(error)")
+                    return
+                }
+                print("Success FACEBOOK")
+                strongSelf.navigationController?.dismiss(animated: true)
+            }
+            
+        }
+        
+        
+    }
+    
+    
 }
