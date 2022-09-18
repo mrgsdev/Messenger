@@ -7,7 +7,13 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseCore
 import FBSDKLoginKit
+import GoogleSignIn
+
+
+
+
 class LoginViewController: UIViewController {
     
     let scrollView: UIScrollView = {
@@ -69,6 +75,8 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private let googleLogInButton = GIDSignInButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Log In"
@@ -78,6 +86,7 @@ class LoginViewController: UIViewController {
                                                             target: self,
                                                             action: #selector(didTapRegister))
         loginButton.addTarget(self,action: #selector(loginButtonTapped),for: .touchUpInside)
+        googleLogInButton.addTarget(self, action: #selector(googleAuthPressed), for: .touchUpInside)
         emailField.delegate = self
         passwordField.delegate = self
         facebookLoginButton.delegate = self
@@ -88,6 +97,7 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
         scrollView.addSubview(facebookLoginButton)
+        scrollView.addSubview(googleLogInButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -115,7 +125,12 @@ class LoginViewController: UIViewController {
                                            y: loginButton.bottom+10,
                                            width: scrollView.width-60,
                                            height: 52)
-        facebookLoginButton.frame.origin.y = loginButton.bottom + 20
+//        facebookLoginButton.frame.origin.y = loginButton.bottom + 20
+        
+        googleLogInButton.frame = CGRect(x: 30,
+                                           y: facebookLoginButton.bottom+10,
+                                           width: scrollView.width-60,
+                                           height: 52)
     }
     
     @objc private func loginButtonTapped() {
@@ -173,6 +188,60 @@ class LoginViewController: UIViewController {
         vc.title = "Create Account"
         navigationController?.pushViewController(vc, animated: true)
     }
+    @objc private func googleAuthPressed(){
+        let user = GIDGoogleUser()
+        
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+    
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+    
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { [unowned self] user, error in
+    
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            print("Did  sign to google: \(user)")
+            guard let email = user?.profile?.email,
+                  let firstName = user?.profile?.name,
+                  let lastName = user?.profile?.familyName else {
+                return
+            }
+            
+            DatabaseManager.shared.userExists(with: email) { exists in
+                if !exists{
+                    // insert to Database
+                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
+                                                                        lastName: lastName,
+                                                                        emailAdress: email))
+                }
+            }
+            
+            
+    
+            guard let authentication = user?.authentication,
+                  let idToken = authentication.idToken else {
+                print("Missing of google user")
+                return
+            }
+    
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: authentication.accessToken)
+            
+            // Authenticate with Firebase using the credential object
+            Auth.auth().signIn(with: credential) { (authResult, error) in
+                if let error = error {
+                    print("Error occurs when authenticate with Firebase: \(error.localizedDescription)")
+                }
+    
+                // Present the main view
+                self.navigationController?.dismiss(animated: false)
+            }
+        }
+    }
+
     
     
 }
@@ -192,6 +261,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
 }
+
 extension LoginViewController: LoginButtonDelegate{
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginKit.FBLoginButton) {
         // no operation
