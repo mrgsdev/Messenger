@@ -5,7 +5,7 @@ target 'Messenger' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for Messenger
+  # Pods for Firebase
     pod 'FirebaseCore'
     pod 'FirebaseAuth'
     pod 'FirebaseDatabase'
@@ -15,4 +15,18 @@ target 'Messenger' do
 
   # Pods for Google Auth
     pod 'GoogleSignIn'
+
+  # Pods for MessageUI
+    pod 'MessageKit'
+
+  # Pods for Activity Indicator
+    pod 'JGProgressHUD'
+
+  # Pods for Realm
+    pod 'RealmSwift'
+
+  # Pods for SDWebImage
+    pod 'SDWebImage'
+
+
 end

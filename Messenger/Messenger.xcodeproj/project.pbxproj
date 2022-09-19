@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4204663928D8986800F3DCBD /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4204663828D8986800F3DCBD /* ChatViewController.swift */; };
 		421257D528CF769700E1E8EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257D428CF769700E1E8EA /* AppDelegate.swift */; };
 		421257D728CF769700E1E8EA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257D628CF769700E1E8EA /* SceneDelegate.swift */; };
 		421257D928CF769700E1E8EA /* ConverstationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257D828CF769700E1E8EA /* ConverstationsViewController.swift */; };
@@ -17,7 +18,7 @@
 		421257F128CF794800E1E8EA /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F028CF794800E1E8EA /* RegisterViewController.swift */; };
 		421257F328CF796900E1E8EA /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F228CF796900E1E8EA /* PhotoViewerViewController.swift */; };
 		421257F528CF797800E1E8EA /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F428CF797800E1E8EA /* VideoPlayerViewController.swift */; };
-		421257F728CF79A000E1E8EA /* NewConverstationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F628CF79A000E1E8EA /* NewConverstationViewController.swift */; };
+		421257F728CF79A000E1E8EA /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F628CF79A000E1E8EA /* NewConversationViewController.swift */; };
 		421257F928CF79B700E1E8EA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F828CF79B700E1E8EA /* ProfileViewController.swift */; };
 		421257FC28CF813900E1E8EA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257FB28CF813900E1E8EA /* Extensions.swift */; };
 		42B58F2528D4720C002289EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42B58F2428D4720C002289EE /* GoogleService-Info.plist */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		10A286C68D97C9CBD3734DC4 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
+		4204663828D8986800F3DCBD /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		421257D128CF769700E1E8EA /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		421257D428CF769700E1E8EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		421257D628CF769700E1E8EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,7 +41,7 @@
 		421257F028CF794800E1E8EA /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		421257F228CF796900E1E8EA /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		421257F428CF797800E1E8EA /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
-		421257F628CF79A000E1E8EA /* NewConverstationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConverstationViewController.swift; sourceTree = "<group>"; };
+		421257F628CF79A000E1E8EA /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		421257F828CF79B700E1E8EA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		421257FB28CF813900E1E8EA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4289A2EA28D4DBC8006B02A0 /* Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Messenger.entitlements; sourceTree = "<group>"; };
@@ -98,8 +100,9 @@
 				421257FA28CF7A7100E1E8EA /* Login & Register VC */,
 				421257F228CF796900E1E8EA /* PhotoViewerViewController.swift */,
 				421257F428CF797800E1E8EA /* VideoPlayerViewController.swift */,
-				421257F628CF79A000E1E8EA /* NewConverstationViewController.swift */,
+				421257F628CF79A000E1E8EA /* NewConversationViewController.swift */,
 				421257F828CF79B700E1E8EA /* ProfileViewController.swift */,
+				4204663828D8986800F3DCBD /* ChatViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -302,7 +305,8 @@
 				421257D728CF769700E1E8EA /* SceneDelegate.swift in Sources */,
 				421257F928CF79B700E1E8EA /* ProfileViewController.swift in Sources */,
 				421257F328CF796900E1E8EA /* PhotoViewerViewController.swift in Sources */,
-				421257F728CF79A000E1E8EA /* NewConverstationViewController.swift in Sources */,
+				4204663928D8986800F3DCBD /* ChatViewController.swift in Sources */,
+				421257F728CF79A000E1E8EA /* NewConversationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
