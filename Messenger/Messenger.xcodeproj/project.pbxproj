@@ -21,6 +21,7 @@
 		421257F728CF79A000E1E8EA /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F628CF79A000E1E8EA /* NewConversationViewController.swift */; };
 		421257F928CF79B700E1E8EA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257F828CF79B700E1E8EA /* ProfileViewController.swift */; };
 		421257FC28CF813900E1E8EA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421257FB28CF813900E1E8EA /* Extensions.swift */; };
+		422218AD28D99D64006455FC /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422218AC28D99D64006455FC /* StorageManager.swift */; };
 		42B58F2528D4720C002289EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42B58F2428D4720C002289EE /* GoogleService-Info.plist */; };
 		42B58F2728D475DF002289EE /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B58F2628D475DF002289EE /* DatabaseManager.swift */; };
 		ABE9807710B73DC44A7CC93C /* Pods_Messenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686C77D0377AC26F411589AE /* Pods_Messenger.framework */; };
@@ -44,6 +45,7 @@
 		421257F628CF79A000E1E8EA /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		421257F828CF79B700E1E8EA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		421257FB28CF813900E1E8EA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		422218AC28D99D64006455FC /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		4289A2EA28D4DBC8006B02A0 /* Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Messenger.entitlements; sourceTree = "<group>"; };
 		42B58F2428D4720C002289EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		42B58F2628D475DF002289EE /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				421257E228CF769800E1E8EA /* Info.plist */,
 				421257FB28CF813900E1E8EA /* Extensions.swift */,
 				42B58F2628D475DF002289EE /* DatabaseManager.swift */,
+				422218AC28D99D64006455FC /* StorageManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				421257F328CF796900E1E8EA /* PhotoViewerViewController.swift in Sources */,
 				4204663928D8986800F3DCBD /* ChatViewController.swift in Sources */,
 				421257F728CF79A000E1E8EA /* NewConversationViewController.swift in Sources */,
+				422218AD28D99D64006455FC /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

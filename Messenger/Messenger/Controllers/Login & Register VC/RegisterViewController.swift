@@ -23,8 +23,8 @@ class RegisterViewController: UIViewController {
         imageView.tintColor = .gray
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
-//        imageView.layer.borderWidth = 2
-//        imageView.layer.borderColor = UIColor.lightGray.cgColor
+        //        imageView.layer.borderWidth = 2
+        //        imageView.layer.borderColor = UIColor.lightGray.cgColor
         return imageView
     }()
     private let firstNameField: UITextField = {
@@ -204,7 +204,7 @@ class RegisterViewController: UIViewController {
             //Firebase register
             
             Auth.auth().createUser(withEmail: email, password: password) {  authResult, error in
-                 
+                
                 if let error = error{
                     let alert = UIAlertController(title: "Woops",
                                                   message: error.localizedDescription,
@@ -217,16 +217,36 @@ class RegisterViewController: UIViewController {
                     print("failed: \(email)")
                     return
                 }
-                DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName, lastName: lastName, emailAdress: email))
-              
-    //            if authResult != nil{
-    //                let alert = UIAlertController(title: "Create",
-    //                                              message: nil,
-    //                                              preferredStyle: .alert)
-    //                alert.addAction(UIAlertAction(title:"Dismiss",
-    //                                              style: .cancel, handler: nil))
-    //                self?.present(alert, animated: true)
-    //            }
+                let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAdress: email)
+                DatabaseManager.shared.insertUser(with: chatUser) { success in
+                    if success{
+                        // upload photo
+                        guard let image = strongSelf.imageView.image,
+                              let data = image.pngData() else {
+                            return
+                        }
+                        let fileName =  chatUser.profilePictureFileName
+                        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { result in
+                            switch result {
+                            case .success(let downloadURL):
+                                UserDefaults.standard.set(downloadURL, forKey: "profile_picture_url")
+                                print(downloadURL)
+                            case .failure(let error):
+                                print("Storage maanger error: \(error)")
+                            }
+                        }
+                    }
+                }
+                
+                
+                //            if authResult != nil{
+                //                let alert = UIAlertController(title: "Create",
+                //                                              message: nil,
+                //                                              preferredStyle: .alert)
+                //                alert.addAction(UIAlertAction(title:"Dismiss",
+                //                                              style: .cancel, handler: nil))
+                //                self?.present(alert, animated: true)
+                //            }
                 strongSelf.navigationController?.dismiss(animated: false)
             }
         }
