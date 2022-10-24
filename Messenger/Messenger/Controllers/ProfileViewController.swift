@@ -20,9 +20,55 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .systemPink
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableHeaderView = createTableHeader()
     }
     
+    func createTableHeader() -> UIView? {
+        
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return nil }
+
+        let safeEmail = DatabaseManager.safeEmail(emailAdress: email)
+        let filename = safeEmail + "_profile_pic.png"
+        
+        let path = "images/"+filename
+        
+        print(path)
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: 300))
+        headerView.backgroundColor = .link
+        let imageView = UIImageView(frame: CGRect(x: (headerView.width-150)/2, y: 75, width: 150, height: 150))
+        
+        headerView.addSubview(imageView)
+        imageView.contentMode = .scaleAspectFill
+   
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 3
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = imageView.width / 2
+        
+        StorageManager.shared.downloadURL(for: path) { [weak self] result in
+            switch result {
+            case .success(let url):
+                self?.downloadImage(imageView: imageView, url: url)
+            case .failure(let error):
+                print("ERROR downlaod url")
+            }
+        }
+        return headerView
+    }
     
+    func downloadImage(imageView:UIImageView,url:URL)  {
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data,error == nil else{
+                return
+            }
+            DispatchQueue.main.async {
+                let image = UIImage(data: data)
+                imageView.image = image
+                print(image)
+                imageView.backgroundColor = .white
+            }
+        }.resume()
+    }
 }
 extension ProfileViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

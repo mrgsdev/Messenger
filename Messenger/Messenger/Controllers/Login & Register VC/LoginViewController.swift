@@ -167,8 +167,12 @@ class LoginViewController: UIViewController {
                 print("failed: \(email)")
                 return
             }
+            let user = result.user
+            print("Logged In User: \(user)")
+            
+            UserDefaults.standard.set(email, forKey: "email")
+            
             strongSelf.navigationController?.dismiss(animated: false)
-            //
             //            if authResult != nil{
             //                let alert = UIAlertController(title: "Success",
             //                                              message: nil,
@@ -177,9 +181,6 @@ class LoginViewController: UIViewController {
             //                                              style: .cancel, handler: nil))
             //                strongSelf.present(alert, animated: true)
             //            }
-            
-            
-            //
         }
     }
     func alertUserLoginError() {
@@ -217,6 +218,7 @@ class LoginViewController: UIViewController {
                 return
             }
             
+            UserDefaults.standard.set(email, forKey: "email")
             DatabaseManager.shared.userExists(with: email) { exists in
                 if !exists{
                     // insert to Database
@@ -327,6 +329,7 @@ extension LoginViewController: LoginButtonDelegate{
                 return
             }
             
+            UserDefaults.standard.set(email, forKey: "email")
             DatabaseManager.shared.userExists(with: email) { exists in
                 if !exists{
                     let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAdress: email)

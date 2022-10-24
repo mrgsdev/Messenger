@@ -20,6 +20,8 @@ final class StorageManager{
         case failedToGetDownloadUrl
     }
     
+ 
+    
     /// Uploads picture to firebase storage and returns completion with url string to download
     public func uploadProfilePicture(with data:Data,fileName:String, completion: @escaping UploadPictureCompletion){
         storage.child("images/\(fileName)").putData(data, metadata: nil, completion: { [weak self] metadata, error in
@@ -47,5 +49,16 @@ final class StorageManager{
             })
         })
         
+    }
+    
+    public func downloadURL(for path: String, completion: @escaping (Result<URL, Error>) -> Void) {
+        let reference = storage.child(path)
+        reference.downloadURL { url, error in
+            guard let url = url,error == nil else{
+                completion(.failure(StorageErrors.failedToUpload))
+                return
+            }
+            completion(.success(url))
+        }
     }
 }
