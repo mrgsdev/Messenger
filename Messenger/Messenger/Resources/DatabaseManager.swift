@@ -40,7 +40,37 @@ final class DatabaseManager{
                 completion(false)
                 return
             }
-            completion(true)
+            
+            self.database.child("users").observeSingleEvent(of: .value) { snapshot in
+                if var usersColletion = snapshot.value as? [[String:String]]{
+                    let newElement = [
+                            "name":user.firstName + " " + user.lastName,
+                            "email":user.safeEmail
+                    ]
+                    usersColletion.append(newElement)
+                    self.database.child("users").setValue(usersColletion) { error, _ in
+                        guard error == nil else {
+                            completion(false)
+                            return
+                        }
+                        completion(true)
+                    }
+                }else{
+                    let newUsersColletion:[[String:String]] = [
+                        [
+                            "name":user.firstName + " " + user.lastName,
+                            "email":user.safeEmail
+                        ]
+                    ]
+                    self.database.child("users").setValue(newUsersColletion) { error, _ in
+                        guard error == nil else {
+                            completion(false)
+                            return
+                        }
+                        completion(true)
+                    }
+                }
+            }
         }
     }
     
