@@ -44,8 +44,8 @@ final class DatabaseManager{
             self.database.child("users").observeSingleEvent(of: .value) { snapshot in
                 if var usersColletion = snapshot.value as? [[String:String]]{
                     let newElement = [
-                            "name":user.firstName + " " + user.lastName,
-                            "email":user.safeEmail
+                        "name":user.firstName + " " + user.lastName,
+                        "email":user.safeEmail
                     ]
                     usersColletion.append(newElement)
                     self.database.child("users").setValue(usersColletion) { error, _ in
@@ -74,8 +74,21 @@ final class DatabaseManager{
         }
     }
     
+    public func getAllUsers(completion: @escaping (Result<[[String:String]],Error>)->Void) {
+        database.child("users").observeSingleEvent(of: .value) { snapshot in
+            
+            guard let value = snapshot.value as? [[String:String]] else {
+                completion(.failure(DatabaseErrors.failedToFetch))
+                return
+            }
+            completion(.success(value))
+        }
+        
+    }
 }
- 
+public enum DatabaseErrors:Error{
+    case failedToFetch
+}
 struct ChatAppUser {
     let firstName:String
     let lastName:String

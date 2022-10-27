@@ -10,6 +10,8 @@ import JGProgressHUD
 class NewConversationViewController: UIViewController {
 
     private let spinner = JGProgressHUD()
+    private var users = [[String:String]]()
+    private var hasFetched = false
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -51,8 +53,23 @@ extension NewConversationViewController: UISearchBarDelegate {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: " ").isEmpty else {
             return
         }
+        spinner.show(in: view)
+        self.searchUsers(query: text)
         
        
     }
-    
+    func searchUsers(query:String)  {
+        if hasFetched {
+            
+        }else{
+            DatabaseManager.shared.getAllUsers { [weak self] result in
+                switch result{
+                case .success(let usersCollection):
+                    self?.users = usersCollection
+                case .failure(let error):
+                    print("Error getAllUsers: \(error)")
+                }
+            }
+        }
+    }
 }
