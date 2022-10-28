@@ -11,6 +11,7 @@ class NewConversationViewController: UIViewController {
 
     private let spinner = JGProgressHUD()
     private var users = [[String:String]]()
+    private var results = [[String:String]]()
     private var hasFetched = false
     
     private let searchBar: UISearchBar = {
@@ -53,6 +54,7 @@ extension NewConversationViewController: UISearchBarDelegate {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: " ").isEmpty else {
             return
         }
+        results.removeAll()
         spinner.show(in: view)
         self.searchUsers(query: text)
         
@@ -60,16 +62,31 @@ extension NewConversationViewController: UISearchBarDelegate {
     }
     func searchUsers(query:String)  {
         if hasFetched {
-            
+            filterUsers(with: query)
         }else{
             DatabaseManager.shared.getAllUsers { [weak self] result in
                 switch result{
                 case .success(let usersCollection):
                     self?.users = usersCollection
+                    self?.filterUsers(with: query)
                 case .failure(let error):
                     print("Error getAllUsers: \(error)")
                 }
             }
         }
+    }
+    
+    func filterUsers(with term:String) {
+        guard hasFetched else {
+            return
+        }
+        
+        var results: [[String:String]] = self.users.filter {
+            guard let name = $0["name"]?.lowercased() else {
+                return false
+            }
+            return name.hasPrefix(term.lowercased())
+        }
+        self.results = results
     }
 }
